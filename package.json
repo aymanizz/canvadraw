@@ -1,0 +1,29 @@
+{
+    "name": "canvadraw",
+    "version": "0.1.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "prebuild": "mkdir -p build",
+        "build": "browserify src/main.ts -v -p [ tsify --noImplicitAny ] > build/app.bundle.js",
+        "prewatch": "npm run prebuild",
+        "watch": "watchify src/main.ts -v -t -p [ tsify --noImplicitAny ] -o build/app.bundle.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/aymanizz/canvadraw.git"
+    },
+    "devDependencies": {
+        "browser-sync": "^2.26.7",
+        "browserify": "^16.5.1",
+        "concurrently": "^5.2.0",
+        "tsify": "^4.0.1",
+        "typescript": "^3.9.3",
+        "watchify": "^3.11.1"
+    },
+    "dependencies": {
+        "konva": "^6.0.0"
+    }
+}
