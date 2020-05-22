@@ -2,8 +2,10 @@ import Konva from "konva"
 import { CommandExecutor } from "./core/command"
 
 export default abstract class DrawingContext {
-    readonly layers: Konva.Layer[]
-    readonly currentLayerIndex = 0
+    abstract readonly stage: Konva.Stage
+    abstract readonly executor: CommandExecutor
+    abstract readonly layers: Konva.Layer[]
+    abstract readonly currentLayer: Konva.Layer
 
     readonly properties = {
         fill: '#000000',
@@ -12,32 +14,30 @@ export default abstract class DrawingContext {
         hitStrokeWidth: 5,
     }
 
-    constructor(readonly stage: Konva.Stage, readonly executor: CommandExecutor) {
-        const layers = stage.getLayers().toArray() as Konva.Layer[]
-        if (layers.length !== 0)
-            this.layers = layers
-        else
-            this.layers = [new Konva.Layer()]
+    readonly overlayProperties = {
+        ...this.properties,
+        fill: "#24323A",
+        stroke: '#4A8EC2',
+        strokeWidth: 1,
     }
 
-    get currentLayer() { return this.layers[this.currentLayerIndex] }
-
-    pushLayer(layer: Konva.Layer) {
-        this.layers.push(layer)
-    }
-
-    popLayer(index: number) {
-        return this.layers.splice(index, 1)
-    }
-
-    get pointerPosition() {
+    getRelativePointerPosition() {
         const position = this.stage.position()
         const pointer = this.stage.getPointerPosition()!
         const scale = this.stage.scaleX()
-        const mousePointTo = {
+        const relativePosition = {
             x: (pointer.x - position.x) / scale,
             y: (pointer.y - position.y) / scale
         }
-        return mousePointTo
+        return relativePosition
+    }
+
+    getOverlayLayer(): Konva.Layer {
+        const layer = new Konva.Layer({
+            hitGraphEnabled: false,
+            imageSmoothingEnabled: false,
+        })
+        this.stage.add(layer)
+        return layer
     }
 }
