@@ -1,4 +1,5 @@
 import Konva from "konva"
+import { CommandExecutor } from "./core/command"
 
 export default abstract class DrawingContext {
     readonly layers: Konva.Layer[]
@@ -11,9 +12,7 @@ export default abstract class DrawingContext {
         hitStrokeWidth: 5,
     }
 
-    constructor(
-        readonly stage: Konva.Stage
-    ) {
+    constructor(readonly stage: Konva.Stage, readonly executor: CommandExecutor) {
         const layers = stage.getLayers().toArray() as Konva.Layer[]
         if (layers.length !== 0)
             this.layers = layers

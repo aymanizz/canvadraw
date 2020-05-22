@@ -1,13 +1,14 @@
 import Konva from 'konva'
 import Tool from './core/tool'
+import { CommandExecutor } from './core/command'
 import DrawingContext from './drawing_context'
 
 export default class DrawingController extends DrawingContext {
     readonly layers = [new Konva.Layer()]
     readonly currentLayerIndex = 0
 
-    constructor(stage: Konva.Stage, private tool: Tool) {
-        super(stage)
+    constructor(stage: Konva.Stage, executor: CommandExecutor, private tool: Tool) {
+        super(stage, executor)
         this.stage.add(this.currentLayer)
         this.hookMouseEventsListeners()
         this.hookKeyEventsListeners()
