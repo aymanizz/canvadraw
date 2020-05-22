@@ -31,13 +31,4 @@ export default abstract class DrawingContext {
         }
         return relativePosition
     }
-
-    getOverlayLayer(): Konva.Layer {
-        const layer = new Konva.Layer({
-            hitGraphEnabled: false,
-            imageSmoothingEnabled: false,
-        })
-        this.stage.add(layer)
-        return layer
-    }
 }
