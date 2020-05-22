@@ -2,16 +2,19 @@ import Konva from 'konva'
 import Tool from './core/tool'
 import { CommandExecutor } from './core/command'
 import DrawingContext from './drawing_context'
+import ShortcutsRegistry from './core/shortcut'
 
 export default class DrawingController extends DrawingContext {
     readonly layers = [new Konva.Layer()]
     readonly currentLayerIndex = 0
+    private shortcuts = new ShortcutsRegistry()
 
     constructor(stage: Konva.Stage, executor: CommandExecutor, private tool: Tool) {
         super(stage, executor)
         this.stage.add(this.currentLayer)
         this.hookMouseEventsListeners()
         this.hookKeyEventsListeners()
+        this.defineShortcuts()
     }
 
     private hookMouseEventsListeners() {
@@ -23,7 +26,24 @@ export default class DrawingController extends DrawingContext {
 
     private hookKeyEventsListeners() {
         window.addEventListener('keydown', (ev) => this.tool.onKeyDown(ev))
-        window.addEventListener('keyup', (ev) => this.tool.onKeyUp(ev))
+        window.addEventListener('keyup', (ev) => {
+            if (this.shortcuts.get(ev)?.call(this, ev) === true)
+                return true
+            return this.tool.onKeyUp(ev)
+        })
+    }
+
+    private defineShortcuts() {
+        this.shortcuts.put('KeyZ', 'ctrl', (_) => {
+            this.executor.undo()
+            this.stage.draw()
+            return true
+        })
+        this.shortcuts.put('KeyZ', 'ctrl+shift', (_) => {
+            this.executor.redo()
+            this.stage.draw()
+            return true
+        })
     }
 
     useTool(tool: Tool) {
