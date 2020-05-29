@@ -21,7 +21,7 @@ export default class DrawingController extends DrawingContext {
     private hookMouseEventsListeners() {
         this.stage.on('wheel', (ev) => this.tool.onMouseWheel(ev))
         this.stage.on('mouseup touchstart', (ev) => this.tool.onMouseUp(ev))
-        this.stage.on('mousedown touchend ', (ev) => this.tool.onMouseDown(ev))
+        this.stage.on('mousedown touchend', (ev) => this.tool.onMouseDown(ev))
         this.stage.on('mousemove touchmove', (ev) => this.tool.onMouseMove(ev))
     }
 

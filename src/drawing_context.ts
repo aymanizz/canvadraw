@@ -12,6 +12,7 @@ export default abstract class DrawingContext {
         stroke: '#000000',
         strokeWidth: 2,
         hitStrokeWidth: 5,
+        opacity: 1,
     }
 
     readonly overlayProperties = {
@@ -19,6 +20,7 @@ export default abstract class DrawingContext {
         fill: "#24323A",
         stroke: '#4A8EC2',
         strokeWidth: 1,
+        opacity: 0.4,
     }
 
     getRelativePointerPosition() {

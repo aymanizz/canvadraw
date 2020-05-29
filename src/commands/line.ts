@@ -2,20 +2,16 @@ import Command from "../core/command"
 import Konva from "konva"
 
 export class DrawLineCommand extends Command {
-    line?: Konva.Line
-
-    constructor(private layer: Konva.Layer, private lineConfig: Konva.LineConfig) {
+    constructor(private layer: Konva.Layer, private line: Konva.Line) {
         super()
     }
 
     protected execute(): void {
-        const line = new Konva.Line(this.lineConfig)
-        this.layer.add(line).draw()
-        this.line = line
+        this.layer.add(this.line).draw()
     }
 
     protected undo(): void {
-        this.line?.destroy()
+        this.line.remove()
         this.layer.draw()
     }
 }
