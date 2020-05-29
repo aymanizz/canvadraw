@@ -10,7 +10,11 @@ export const stage = new Konva.Stage({
     height: window.innerHeight
 })
 
-const tools = [new Tool.PenTool(), new Tool.ZoomTool()]
+const tools = [
+    new Tool.PenTool(),
+    new Tool.SelectTool(),
+    new Tool.ZoomTool(),
+]
 
 let currentTool = 0
 
