@@ -15,11 +15,6 @@ export class PenTool extends Tool {
   // line following the user's mouse movement.
   private mode: 'free' | 'line' | 'none' = 'none'
 
-  // whether the user has moved the mouse since last onMouseDown call.
-  private get mouseHasMoved(): boolean {
-    return this.mode !== 'free' && this.line !== undefined && this.line.points().length !== 2
-  }
-
   deactivate(): void {
     if (this.line) this.endLine()
     super.deactivate()
@@ -57,6 +52,12 @@ export class PenTool extends Tool {
     this.context.currentLayer.batchDraw()
 
     return true
+  }
+
+  // whether the user has moved the mouse since last onMouseDown call.
+  private get mouseHasMoved(): boolean {
+    // if the mouse has moved then we would have more than two points added to the line.
+    return this.line?.points().length !== 2
   }
 
   onMouseUp(_: KonvaEventObject<MouseEvent>): boolean {
