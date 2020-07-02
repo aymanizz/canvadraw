@@ -1,24 +1,38 @@
-import { KonvaEventObject } from "konva/types/Node"
-import DrawingContext from "../drawing_context"
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { KonvaEventObject } from 'konva/types/Node'
+import DrawingContext from '../drawing_context'
 
 export default abstract class Tool {
-    protected context!: DrawingContext
+  protected context!: DrawingContext
 
-    activate(context: DrawingContext) {
-        this.context = context
-    }
+  activate(context: DrawingContext): void {
+    this.context = context
+  }
 
-    deactivate() { }
+  deactivate(): void {}
 
-    onMouseDown(_event: KonvaEventObject<MouseEvent>) { return false }
+  onMouseDown(event: KonvaEventObject<MouseEvent>): boolean {
+    return false
+  }
 
-    onMouseUp(_event: KonvaEventObject<MouseEvent>) { return false }
+  onMouseUp(event: KonvaEventObject<MouseEvent>): boolean {
+    return false
+  }
 
-    onMouseMove(_event: KonvaEventObject<MouseEvent>) { return false }
+  onMouseMove(event: KonvaEventObject<MouseEvent>): boolean {
+    return false
+  }
 
-    onMouseWheel(_event: KonvaEventObject<MouseWheelEvent>) { return false }
+  onMouseWheel(event: KonvaEventObject<MouseWheelEvent>): boolean {
+    return false
+  }
 
-    onKeyDown(_event: KeyboardEvent) { return false }
+  onKeyDown(event: KeyboardEvent): boolean {
+    return false
+  }
 
-    onKeyUp(_event: KeyboardEvent) { return false }
+  onKeyUp(event: KeyboardEvent): boolean {
+    return false
+  }
 }
