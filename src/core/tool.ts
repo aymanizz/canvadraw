@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { KonvaEventObject } from 'konva/types/Node'
 import DrawingContext from '../drawing_context'
