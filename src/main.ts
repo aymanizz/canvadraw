@@ -25,3 +25,7 @@ const globalShortcuts = new ShortcutsRegistry().put('KeyT', 'none', () => {
 })
 
 window.addEventListener('keyup', (ev) => globalShortcuts.get(ev)?.call(undefined, ev))
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+window.controller = controller

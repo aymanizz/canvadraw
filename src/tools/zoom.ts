@@ -9,7 +9,7 @@ export class ZoomTool extends Tool {
     super()
   }
 
-  onMouseUp(event: KonvaEventObject<MouseEvent>): boolean {
+  onMouseClick(event: KonvaEventObject<MouseEvent>): boolean {
     if (event.evt.ctrlKey) {
       this.resetZoom()
     } else {

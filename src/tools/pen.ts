@@ -20,20 +20,38 @@ export class PenTool extends Tool {
     super.deactivate()
   }
 
-  onMouseDown(_: KonvaEventObject<MouseEvent>): boolean {
-    if (this.line && this.mode !== 'line') return false
-
+  onMouseClick(_: KonvaEventObject<MouseEvent>): boolean {
     if (this.mode === 'none') {
       const { x, y } = this.context.getRelativePointerPosition()
       this.line = new Konva.Line({
         ...this.context.overlayProperties,
         globalCompositeOperation: 'source-over',
-        points: [x, y],
+        points: [x, y, x, y],
       })
       this.context.currentLayer.add(this.line).draw()
 
-      this.mode = 'free'
+      this.mode = 'line'
+    } else if (this.mode === 'line') {
+      const points = this.line!.points()
+      points.push(...points.slice(-2))
+      this.context.currentLayer.batchDraw()
     }
+
+    return true
+  }
+
+  onMouseDown(_: KonvaEventObject<MouseEvent>): boolean {
+    if (this.line || this.mode === 'line') return false
+
+    const { x, y } = this.context.getRelativePointerPosition()
+    this.line = new Konva.Line({
+      ...this.context.overlayProperties,
+      globalCompositeOperation: 'source-over',
+      points: [x, y],
+    })
+    this.context.currentLayer.add(this.line).draw()
+
+    this.mode = 'free'
 
     return true
   }
@@ -54,26 +72,10 @@ export class PenTool extends Tool {
     return true
   }
 
-  // whether the user has moved the mouse since last onMouseDown call.
-  private get mouseHasMoved(): boolean {
-    // if the mouse has moved then we would have more than two points added to the line.
-    return this.line?.points().length !== 2
-  }
-
   onMouseUp(_: KonvaEventObject<MouseEvent>): boolean {
-    if (!this.line) return false
+    if (!this.line || this.mode != 'free') return false
 
-    const points = this.line.points()
-
-    if (!this.mouseHasMoved) {
-      this.mode = 'line'
-    }
-
-    if (this.mode === 'line') {
-      points.push(...points.slice(-2))
-    } else if (this.mode === 'free') {
-      this.endLine()
-    }
+    this.endLine()
 
     return true
   }
@@ -82,6 +84,7 @@ export class PenTool extends Tool {
     if (this.mode === 'line') {
       this.line!.points().splice(-2, 2)
     }
+
     const command = new DrawLineCommand(this.context.currentLayer, this.line!.setAttrs({ ...this.context.properties }))
     this.context.executor.execute(command)
 
