@@ -11,15 +11,19 @@ export default abstract class Tool {
 
   deactivate(): void {}
 
+  onMouseClick(event: KonvaEventObject<MouseEvent>): boolean {
+    return false
+  }
+
   onMouseDown(event: KonvaEventObject<MouseEvent>): boolean {
     return false
   }
 
-  onMouseUp(event: KonvaEventObject<MouseEvent>): boolean {
+  onMouseMove(event: KonvaEventObject<MouseEvent>): boolean {
     return false
   }
 
-  onMouseMove(event: KonvaEventObject<MouseEvent>): boolean {
+  onMouseUp(event: KonvaEventObject<MouseEvent>): boolean {
     return false
   }
 
