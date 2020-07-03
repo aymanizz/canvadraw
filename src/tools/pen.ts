@@ -81,12 +81,19 @@ export class PenTool extends Tool {
   }
 
   private endLine(): void {
+    const line = this.line!
     if (this.mode === 'line') {
-      this.line!.points().splice(-2, 2)
+      line.points().splice(-2, 2)
     }
 
-    const command = new DrawLineCommand(this.context.currentLayer, this.line!.setAttrs({ ...this.context.properties }))
-    this.context.executor.execute(command)
+    if (line.points().length > 2) {
+      line.setAttrs({ ...this.context.properties })
+      const command = new DrawLineCommand(this.context.currentLayer, line)
+      this.context.executor.execute(command, false)
+    } else {
+      line.remove()
+      this.context.currentLayer.draw()
+    }
 
     this.line = undefined
     this.mode = 'none'
