@@ -12,19 +12,24 @@ export default class DrawingController extends DrawingContext {
   private mouseDownEvent?: KonvaEventObject<MouseEvent>
   private mouseHasMoved = false
 
+  readonly executor: CommandExecutor
   readonly layering: Layering
 
-  constructor(readonly stage: Konva.Stage, readonly executor: CommandExecutor, private tool: Tool) {
+  private tool?: Tool
+
+  constructor(readonly stage: Konva.Stage) {
     super()
+
+    this.executor = new CommandExecutor()
     this.layering = new Layering(stage)
+
+    this.defineShortcuts()
     this.hookMouseEventsListeners()
     this.hookKeyEventsListeners()
-    this.defineShortcuts()
-    this.tool.activate(this)
   }
 
   private hookMouseEventsListeners(): void {
-    this.stage.on('wheel', (ev) => this.tool.onMouseWheel(ev))
+    this.stage.on('wheel', (ev) => this.tool?.onMouseWheel(ev))
     this.stage.on('mousedown touchstart', (ev) => this.onMouseDown(ev))
     this.stage.on('mousemove touchmove', (ev) => this.onMouseMove(ev))
     this.stage.on('mouseup touchend', (ev) => this.onMouseUp(ev))
@@ -32,10 +37,10 @@ export default class DrawingController extends DrawingContext {
   }
 
   private hookKeyEventsListeners(): void {
-    window.addEventListener('keydown', (ev) => this.tool.onKeyDown(ev))
+    window.addEventListener('keydown', (ev) => this.tool?.onKeyDown(ev))
     window.addEventListener('keyup', (ev) => {
       if (this.shortcuts.get(ev)?.call(this, ev) === true) return true
-      return this.tool.onKeyUp(ev)
+      return this.tool?.onKeyUp(ev)
     })
   }
 
@@ -53,11 +58,11 @@ export default class DrawingController extends DrawingContext {
       })
   }
 
-  useTool(tool: Tool): void {
-    this.tool.deactivate()
+  useTool(tool?: Tool): void {
+    this.tool?.deactivate()
     this.layering.clearOverlay()
     this.tool = tool
-    this.tool.activate(this)
+    this.tool?.activate(this)
   }
 
   private onMouseDown(event: KonvaEventObject<MouseEvent>): void {
@@ -68,20 +73,20 @@ export default class DrawingController extends DrawingContext {
   private onMouseMove(event: KonvaEventObject<MouseEvent>): void {
     if (this.mouseDownEvent !== undefined && !this.mouseHasMoved) {
       this.mouseHasMoved = true
-      this.tool.onMouseDown(this.mouseDownEvent!)
+      this.tool?.onMouseDown(this.mouseDownEvent!)
     }
-    this.tool.onMouseMove(event)
+    this.tool?.onMouseMove(event)
   }
 
   private onMouseUp(event: KonvaEventObject<MouseEvent>): void {
     if (this.mouseHasMoved) {
-      this.tool.onMouseUp(event)
+      this.tool?.onMouseUp(event)
     }
   }
 
   private onMouseClick(event: KonvaEventObject<MouseEvent>): void {
     if (!this.mouseHasMoved) {
-      this.tool.onMouseClick(event)
+      this.tool?.onMouseClick(event)
     }
     this.mouseHasMoved = false
     this.mouseDownEvent = undefined
