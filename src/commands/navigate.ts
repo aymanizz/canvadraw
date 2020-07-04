@@ -13,6 +13,10 @@ export class NavigateCommand extends Command {
     super()
   }
 
+  static pan(stage: Stage, oldOrigin: Vector2d, newOrigin: Vector2d): NavigateCommand {
+    return new NavigateCommand(stage, stage.scaleX(), newOrigin, stage.scaleX(), oldOrigin)
+  }
+
   static relativeZoom(stage: Stage, factor: number, position: Vector2d): NavigateCommand {
     const oldScale = stage.scaleX()
     const scale = oldScale * factor
