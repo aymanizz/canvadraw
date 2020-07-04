@@ -1,6 +1,5 @@
 import Konva from 'konva'
 import DrawingController from './drawing_controller'
-import { CommandExecutor } from './core/command'
 import * as Tool from './tools'
 import ShortcutsRegistry from './core/shortcut'
 
@@ -10,11 +9,11 @@ export const stage = new Konva.Stage({
   height: window.innerHeight,
 })
 
+let currentTool = 0
 const tools = [new Tool.PenTool(), new Tool.ZoomTool()]
 
-let currentTool = 0
-
-const controller = new DrawingController(stage, new CommandExecutor(), tools[currentTool])
+const controller = new DrawingController(stage)
+controller.useTool(tools[currentTool])
 
 // temporary solution for switching between tools
 const globalShortcuts = new ShortcutsRegistry().put('KeyT', 'none', () => {
