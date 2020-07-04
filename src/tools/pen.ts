@@ -2,9 +2,12 @@ import Konva from 'konva'
 import { KonvaEventObject } from 'konva/types/Node'
 import Tool from '../core/tool'
 import { DrawLineCommand } from '../commands'
+import DrawingContext from '../drawing_context'
+import { Layering } from '../core/layering'
 
 export class PenTool extends Tool {
   private line?: Konva.Line
+  private layering!: Layering
 
   // drawing mode flag.
   //
@@ -14,6 +17,11 @@ export class PenTool extends Tool {
   // in this mode, the line contains an extra point. onMouseMove replaces this point to display the
   // line following the user's mouse movement.
   private mode: 'free' | 'line' | 'none' = 'none'
+
+  activate(context: DrawingContext): void {
+    super.activate(context)
+    this.layering = context.layering
+  }
 
   deactivate(): void {
     if (this.line) this.endLine()
@@ -28,13 +36,13 @@ export class PenTool extends Tool {
         globalCompositeOperation: 'source-over',
         points: [x, y, x, y],
       })
-      this.context.currentLayer.add(this.line).draw()
+      this.layering.overlay.add(this.line).draw()
 
       this.mode = 'line'
     } else if (this.mode === 'line') {
       const points = this.line!.points()
       points.push(...points.slice(-2))
-      this.context.currentLayer.batchDraw()
+      this.layering.overlay.batchDraw()
     }
 
     return true
@@ -49,7 +57,7 @@ export class PenTool extends Tool {
       globalCompositeOperation: 'source-over',
       points: [x, y],
     })
-    this.context.currentLayer.add(this.line).draw()
+    this.layering.overlay.add(this.line).draw()
 
     this.mode = 'free'
 
@@ -67,7 +75,7 @@ export class PenTool extends Tool {
     } else {
       points.splice(-2, 2, x, y)
     }
-    this.context.currentLayer.batchDraw()
+    this.layering.overlay.batchDraw()
 
     return true
   }
@@ -86,13 +94,13 @@ export class PenTool extends Tool {
       line.points().splice(-2, 2)
     }
 
+    line.remove()
+    this.layering.overlay.draw()
+
     if (line.points().length > 2) {
       line.setAttrs({ ...this.context.properties })
-      const command = new DrawLineCommand(this.context.currentLayer, line)
-      this.context.executor.execute(command, false)
-    } else {
-      line.remove()
-      this.context.currentLayer.draw()
+      const command = new DrawLineCommand(this.layering.currentLayer, line)
+      this.context.executor.execute(command)
     }
 
     this.line = undefined

@@ -2,7 +2,7 @@ import Command from '../core/command'
 import Konva from 'konva'
 
 export class DrawLineCommand extends Command {
-  constructor(private layer: Konva.Layer, private line: Konva.Line) {
+  constructor(private layer: Konva.Group, private line: Konva.Line) {
     super()
   }
 

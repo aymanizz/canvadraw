@@ -57,4 +57,9 @@ export class Layering {
     this.layers[this._currentIndex].remove()
     this._currentIndex = this.length > 1 ? this._currentIndex - 1 : 0
   }
+
+  clearOverlay(): void {
+    this.overlay.removeChildren()
+    this.overlay.clear()
+  }
 }
