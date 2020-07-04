@@ -1,2 +1,2 @@
 export * from './pen'
-export * from './zoom'
+export * from './navigate'
