@@ -1,2 +1,2 @@
 export * from './line'
-export * from './zoom'
+export * from './navigate'
