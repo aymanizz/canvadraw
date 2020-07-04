@@ -4,19 +4,19 @@ import { CommandExecutor } from './core/command'
 import DrawingContext from './drawing_context'
 import ShortcutsRegistry from './core/shortcut'
 import { KonvaEventObject } from 'konva/types/Node'
+import { Layering } from './core/layering'
 
 export default class DrawingController extends DrawingContext {
-  readonly layers = [new Konva.Layer()]
-  protected currentLayerIndex = 0
-
   private shortcuts = new ShortcutsRegistry()
 
   private mouseDownEvent?: KonvaEventObject<MouseEvent>
   private mouseHasMoved = false
 
+  readonly layering: Layering
+
   constructor(readonly stage: Konva.Stage, readonly executor: CommandExecutor, private tool: Tool) {
     super()
-    this.stage.add(this.currentLayer)
+    this.layering = new Layering(stage)
     this.hookMouseEventsListeners()
     this.hookKeyEventsListeners()
     this.defineShortcuts()
@@ -40,24 +40,22 @@ export default class DrawingController extends DrawingContext {
   }
 
   private defineShortcuts(): void {
-    this.shortcuts.put('KeyZ', 'ctrl', () => {
-      this.executor.undo()
-      this.stage.draw()
-      return true
-    })
-    this.shortcuts.put('KeyZ', 'ctrl+shift', () => {
-      this.executor.redo()
-      this.stage.draw()
-      return true
-    })
-  }
-
-  get currentLayer(): Konva.Layer {
-    return this.layers[this.currentLayerIndex]
+    this.shortcuts
+      .put('KeyZ', 'ctrl', () => {
+        this.executor.undo()
+        this.stage.draw()
+        return true
+      })
+      .put('KeyZ', 'ctrl+shift', () => {
+        this.executor.redo()
+        this.stage.draw()
+        return true
+      })
   }
 
   useTool(tool: Tool): void {
     this.tool.deactivate()
+    this.layering.clearOverlay()
     this.tool = tool
     this.tool.activate(this)
   }

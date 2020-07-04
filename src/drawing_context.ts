@@ -1,11 +1,11 @@
 import Konva from 'konva'
 import { CommandExecutor } from './core/command'
+import { Layering } from './core/layering'
 
 export default abstract class DrawingContext {
   abstract readonly stage: Konva.Stage
+  abstract readonly layering: Layering
   abstract readonly executor: CommandExecutor
-  abstract readonly layers: Konva.Layer[]
-  abstract readonly currentLayer: Konva.Layer
 
   readonly properties = {
     fill: '#000000',
