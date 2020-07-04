@@ -10,7 +10,7 @@ export const stage = new Konva.Stage({
 })
 
 let currentTool = 0
-const tools = [new Tool.PenTool(), new Tool.ZoomTool()]
+const tools = [new Tool.PenTool(), new Tool.NavigateTool()]
 
 const controller = new DrawingController(stage)
 controller.useTool(tools[currentTool])

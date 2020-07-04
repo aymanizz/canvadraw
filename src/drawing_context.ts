@@ -1,6 +1,7 @@
 import Konva from 'konva'
 import { CommandExecutor } from './core/command'
 import { Layering } from './core/layering'
+import { Vector2d } from 'konva/types/types'
 
 export default abstract class DrawingContext {
   abstract readonly stage: Konva.Stage
@@ -23,7 +24,7 @@ export default abstract class DrawingContext {
     opacity: 0.4,
   }
 
-  getRelativePointerPosition(): { x: number; y: number } {
+  getRelativePointerPosition(): Vector2d {
     const position = this.stage.position()
     const pointer = this.stage.getPointerPosition()!
     const scale = this.stage.scaleX()
