@@ -1,6 +1,6 @@
 import Konva from 'konva'
 
-export class Layering {
+export default class Layering {
   private _currentIndex = 0
   private container = new Konva.Layer()
   readonly overlay = new Konva.Layer()

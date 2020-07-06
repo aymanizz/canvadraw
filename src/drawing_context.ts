@@ -1,6 +1,6 @@
 import Konva from 'konva'
 import { CommandExecutor } from './core/command'
-import { Layering } from './core/layering'
+import Layering from './core/layering'
 import { Vector2d } from 'konva/types/types'
 
 export default abstract class DrawingContext {

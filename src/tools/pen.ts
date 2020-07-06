@@ -3,7 +3,7 @@ import { KonvaEventObject } from 'konva/types/Node'
 import Tool from '../core/tool'
 import { DrawLineCommand } from '../commands'
 import DrawingContext from '../drawing_context'
-import { Layering } from '../core/layering'
+import Layering from '../core/layering'
 
 export class PenTool extends Tool {
   private line?: Konva.Line

@@ -4,7 +4,7 @@ import { CommandExecutor } from './core/command'
 import DrawingContext from './drawing_context'
 import ShortcutsRegistry from './core/shortcut'
 import { KonvaEventObject } from 'konva/types/Node'
-import { Layering } from './core/layering'
+import Layering from './core/layering'
 
 export default class DrawingController extends DrawingContext {
   private shortcuts = new ShortcutsRegistry()
