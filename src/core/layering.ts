@@ -6,8 +6,8 @@ export default class Layering {
   readonly overlay = new Konva.Layer()
 
   constructor(stage: Konva.Stage) {
-    stage.add(this.overlay)
     stage.add(this.container)
+    stage.add(this.overlay)
     this.container.add(new Konva.Group())
   }
 
