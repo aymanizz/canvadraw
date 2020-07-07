@@ -1,4 +1,4 @@
-name: Build and Format
+name: Build, Test and Format
 
 on:
   push:
@@ -26,5 +26,5 @@ jobs:
           ${{ runner.OS }}-
     - name: Install dependencies
       run: npm ci
-    - name: Run build and format checks
-      run: npx concurrently -m 1 "npm run build" "npm run lint"
+    - name: Run build, test and format checks
+      run: npx concurrently -m 1 "npm run build" "npm run test" "npm run lint"
