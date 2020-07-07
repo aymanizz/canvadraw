@@ -10,7 +10,7 @@
         "watch": "watchify src/main.ts -v -t -p [ tsify --noImplicitAny ] -o build/app.bundle.js",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
         "format": "npm run lint -- --fix",
-        "test": "mocha -r ts-node/register tests/**/*.spec.ts"
+        "test": "mocha -r ts-node/register tests/_setup.ts tests/*.spec.ts tests/**/*.spec.ts"
     },
     "license": "MIT",
     "repository": {
