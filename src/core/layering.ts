@@ -55,7 +55,7 @@ export default class Layering {
     }
 
     this.layers[this._currentIndex].remove()
-    this._currentIndex = this.length > 1 ? this._currentIndex - 1 : 0
+    this._currentIndex = Math.max(0, this._currentIndex - 1)
   }
 
   clearOverlay(): void {
