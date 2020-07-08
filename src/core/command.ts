@@ -4,28 +4,36 @@ export default abstract class Command {
 }
 
 export class CommandExecutor {
+  private _commands: Command[] = []
+  private top = 0
+
+  get history(): readonly Command[] {
+    return this._commands
+  }
+
+  execute(command: Command, executed = false): void {
+    if (!executed) {
+      command['execute']()
+    }
+    this._commands[this.top++] = command
+    this._commands.length = this.top
+  }
+
   undo(): boolean {
-    if (this.length === 0 || this.top === 0) return false
-    const command = this.commands[--this.top]
+    if (this.top === 0) {
+      return false
+    }
+    const command = this._commands[--this.top]
     command['undo']()
     return true
   }
 
   redo(): boolean {
-    if (this.length === 0 || this.top === this.length) return false
-    const command = this.commands[this.top++]
+    if (this.top === this._commands.length) {
+      return false
+    }
+    const command = this._commands[this.top++]
     command['execute']()
     return true
   }
-
-  execute(command: Command, executed = false): void {
-    if (this.length === this.commands.length) throw new Error('history overflow!')
-    if (!executed) command['execute']()
-    this.commands[this.top++] = command
-    ++this.length
-  }
-
-  private readonly commands: Command[] = Array(100)
-  private length = 0
-  private top = 0
 }
