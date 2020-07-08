@@ -58,6 +58,24 @@ export default class Layering {
     this._currentIndex = Math.max(0, this._currentIndex - 1)
   }
 
+  moveLayerUp(): void {
+    if (this._currentIndex === this.length - 1) {
+      throw Error('cannot move the top layer up')
+    }
+
+    this.currentLayer.moveUp()
+    this._currentIndex += 1
+  }
+
+  moveLayerDown(): void {
+    if (this._currentIndex === 0) {
+      throw Error('cannot move the bottom layer down')
+    }
+
+    this.currentLayer.moveDown()
+    this._currentIndex -= 1
+  }
+
   clearOverlay(): void {
     this.overlay.removeChildren()
     this.overlay.clear()

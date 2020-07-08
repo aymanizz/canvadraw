@@ -53,7 +53,7 @@ describe('layering system', () => {
     subject.addLayer()
     subject.removeLayer()
 
-    expect(subject.currentLayer.id).to.be.equal(layer.id)
+    expect(subject.currentLayer.id()).to.be.equal(layer.id())
     expect(subject.currentIndex).to.be.equal(1)
   })
 
@@ -62,7 +62,7 @@ describe('layering system', () => {
     subject.setCurrentLayer(0)
     subject.removeLayer()
 
-    expect(subject.currentLayer.id).to.be.equal(layer.id)
+    expect(subject.currentLayer.id()).to.be.equal(layer.id())
     expect(subject.currentIndex).to.be.equal(0)
   })
 
@@ -70,7 +70,41 @@ describe('layering system', () => {
     expect(subject.removeLayer.bind(subject)).to.throw()
   })
 
-  it('moves the current layer up correctly')
+  it('moves the current layer up correctly', () => {
+    subject.addLayer()
+    subject.addLayer()
+    subject.setCurrentLayer(0)
 
-  it('moves the current layer down correctly')
+    const currentLayer = subject.currentLayer
+    expect(currentLayer.zIndex()).to.be.equal(0)
+
+    subject.moveLayerUp()
+    expect(subject.currentLayer.id()).to.be.equal(currentLayer.id())
+    expect(subject.currentLayer.zIndex()).to.be.equal(1)
+
+    subject.moveLayerUp()
+    expect(subject.currentLayer.id()).to.be.equal(currentLayer.id())
+    expect(subject.currentLayer.zIndex()).to.be.equal(2)
+
+    expect(subject.moveLayerUp.bind(subject)).to.throw()
+  })
+
+  it('moves the current layer down correctly', () => {
+    subject.addLayer()
+    subject.addLayer()
+    subject.setCurrentLayer(2)
+
+    const currentLayer = subject.currentLayer
+    expect(currentLayer.zIndex()).to.be.equal(2)
+
+    subject.moveLayerDown()
+    expect(subject.currentLayer.id()).to.be.equal(currentLayer.id())
+    expect(subject.currentLayer.zIndex()).to.be.equal(1)
+
+    subject.moveLayerDown()
+    expect(subject.currentLayer.id()).to.be.equal(currentLayer.id())
+    expect(subject.currentLayer.zIndex()).to.be.equal(0)
+
+    expect(subject.moveLayerDown.bind(subject)).to.throw()
+  })
 })
