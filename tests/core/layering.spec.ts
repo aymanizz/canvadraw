@@ -3,8 +3,8 @@ import Layering from '../../src/core/layering'
 import { expect } from 'chai'
 
 describe('layering system', () => {
-  let stage!: Konva.Stage
-  let subject!: Layering
+  let stage: Konva.Stage
+  let subject: Layering
 
   beforeEach(() => {
     stage = new Konva.Stage({ container: 'container' })
