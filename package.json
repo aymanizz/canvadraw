@@ -10,7 +10,7 @@
         "watch": "watchify src/main.ts -v -t -p [ tsify --noImplicitAny ] -o build/app.bundle.js",
         "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
         "format": "npm run lint -- --fix",
-        "test": "mocha -r ts-node/register tests/_setup.ts tests/*.spec.ts tests/**/*.spec.ts"
+        "test": "nyc mocha -r ts-node/register tests/_setup.ts tests/*.spec.ts tests/**/*.spec.ts"
     },
     "license": "MIT",
     "repository": {
@@ -31,6 +31,7 @@
         "eslint-plugin-prettier": "^3.1.4",
         "jsdom": "^16.2.2",
         "mocha": "^8.0.1",
+        "nyc": "^15.1.0",
         "prettier": "^2.0.5",
         "ts-node": "^8.10.2",
         "tsify": "^4.0.1",
