@@ -1,0 +1,4 @@
+{
+  "require": ["ts-node/register", "tests/_setup.ts"],
+  "spec": ["tests/sanity.spec.ts", "tests/**/*.spec.ts"]
+}
